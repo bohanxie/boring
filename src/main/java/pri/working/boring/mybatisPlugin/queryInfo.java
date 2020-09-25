@@ -7,8 +7,10 @@ import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.reflection.DefaultReflectorFactory;
 import org.apache.ibatis.reflection.MetaObject;
+import org.apache.ibatis.reflection.SystemMetaObject;
 import org.apache.ibatis.reflection.factory.DefaultObjectFactory;
 import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
+import org.apache.ibatis.scripting.defaults.RawSqlSource;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Component;
@@ -51,9 +53,16 @@ public class queryInfo implements Interceptor {
 
         String newSql = sql + " limit 10";
 
-        resetSql2Invocation(invocation, newSql);
+        //方式一：通过新建MappedStatement实现对sql的修改
+        //resetSql2Invocation(invocation, newSql);
 
-        return invocation.proceed();
+        //方式2：直接通过MetaObject修改原来的属性
+        MetaObject  metaObject = SystemMetaObject.forObject(ms);
+        metaObject.setValue("sqlSource.sqlSource.sql", newSql);
+        Object object = invocation.proceed();
+        //恢复原语句
+        metaObject.setValue("sqlSource.sqlSource.sql", sql);
+        return object;
     }
 
     @Override
@@ -109,6 +118,7 @@ public class queryInfo implements Interceptor {
         MappedStatement statement = (MappedStatement) args[0];
         Object parameterObject = args[1];
         BoundSql boundSql = statement.getBoundSql(parameterObject);
+        //MappedStatement相当于一个方法头信息
         MappedStatement newStatement = newMappedStatement(statement, new BoundSqlSqlSource(boundSql));
         MetaObject msObject =  MetaObject.forObject(newStatement, new DefaultObjectFactory(), new DefaultObjectWrapperFactory(),new DefaultReflectorFactory());
         msObject.setValue("sqlSource.boundSql.sql", sql);

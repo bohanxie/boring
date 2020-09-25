@@ -2,6 +2,11 @@ server:
   port: 8080
 
 spring:
+  devtools:
+    restart:
+      enabled: true  #设置开启热部署
+      additional-paths: src/main/java #重启目录
+      exclude: WEB-INF/**
   datasource:
     username: root
     password: 123456
@@ -11,6 +16,7 @@ spring:
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
   type-aliases-package: pri.working.boring.entity
+
 
 #showSql
 logging:
