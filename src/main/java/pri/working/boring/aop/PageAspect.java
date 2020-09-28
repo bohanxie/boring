@@ -25,13 +25,13 @@ import java.lang.reflect.Method;
 @Lazy(false)
 public class PageAspect {
 
-    @Pointcut("@annotation(pri.working.boring.annotation.PageAnnotation)")
+   /* @Pointcut("@annotation(pri.working.boring.annotation.PageAnnotation)")
     private void cutMethod() {
 
-    }
+    }*/
 
-    @Before("cutMethod()")
-    public void begin(JoinPoint joinPoint) throws Throwable {
+    @Before("@annotation(pageAnnotation)")
+    public void begin(JoinPoint joinPoint, PageAnnotation pageAnnotation) throws Throwable {
         // 获取目标方法的名称
         String methodName = joinPoint.getSignature().getName();
         // 获取方法传入参数
