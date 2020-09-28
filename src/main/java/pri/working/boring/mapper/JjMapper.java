@@ -1,6 +1,7 @@
 package pri.working.boring.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import pri.working.boring.annotation.PageAnnotation;
 import pri.working.boring.entity.Jj;
 
 import java.util.List;
@@ -14,5 +15,7 @@ import java.util.List;
  */
 @Mapper
 public interface JjMapper {
+
+    @PageAnnotation
     List<Jj> getAll();
 }

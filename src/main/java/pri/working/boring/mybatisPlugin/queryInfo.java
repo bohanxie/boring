@@ -32,6 +32,8 @@ import java.util.concurrent.locks.ReentrantLock;
 @Intercepts(@Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class}))
 public class queryInfo implements Interceptor {
 
+    public static final ThreadLocal LOCAL_PAGE = new ThreadLocal();
+
     //定义可重入锁
     private ReentrantLock lock = new ReentrantLock();
 
