@@ -16,6 +16,6 @@ import java.util.List;
 @Mapper
 public interface JjMapper {
 
-    @PageAnnotation
+    @PageAnnotation(pageSize = 50)
     List<Jj> getAll();
 }
