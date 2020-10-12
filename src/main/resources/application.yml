@@ -1,7 +1,9 @@
 server:
-  port: 8080
+  port: 8088
 
 spring:
+  application:
+    name: demo
   devtools:
     restart:
       enabled: true  #设置开启热部署
@@ -13,9 +15,20 @@ spring:
     url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
     driver-class-name: com.mysql.jdbc.Driver
 
+
+
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
   type-aliases-package: pri.working.boring.entity
+
+#kafka配置信息
+kafka:
+  bootstrap:
+    servers: localhost:9092
+  topic:
+    user: topic-user
+  group:
+    id: group-user
 
 
 #showSql
